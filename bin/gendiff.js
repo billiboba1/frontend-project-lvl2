@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { fileDif } from './files.js'
 import { Command } from 'commander';
 const program = new Command();
 
@@ -7,6 +8,13 @@ program
   .version('0.0.1')
   .description('Usage: gendiff [options] <filepath1> <filepath2>' +
       '\n\nCompares two configuration files and shows a difference.')
-  .option('-f, --format <type>', 'output format');
+  .option('-f, --format <type>', 'output format')
+  .parse(process.argv);
 
-program.parse();
+const { args } = program;
+const options = program.opts();
+if (options.format) {
+} else {
+  console.log(fileDif(args[0], args[1]));
+}
+
