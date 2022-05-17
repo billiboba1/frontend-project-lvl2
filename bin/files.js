@@ -13,7 +13,6 @@ const sortFn = (x, y) => {
 }
 
 export const genDiff = (filepath1, filepath2) => {
-
   const generateDifference = (file1, file2) => {
     let resultString = '{\n';
     const obj = {};
@@ -22,7 +21,7 @@ export const genDiff = (filepath1, filepath2) => {
       console.log(deleteList[deleteList.length - 1]);
       if ((deleteList.length > 0) && (deleteList[deleteList.length - 1][0] === child[0]) && (deleteList[deleteList.length - 1][1] === child[1])) {
         deleteList.pop();
-        resultString += `  ${child[0]}: ${child[1]}\n`;
+        resultString += `    ${child[0]}: ${child[1]}\n`;
       } else {
         if (array1.includes(child) && !array2.includes(child)) {
           resultString += `  - ${child[0]}: ${child[1]}\n`;
