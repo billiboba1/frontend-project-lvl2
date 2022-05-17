@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { fileDif } from './files.js'
+import { genDiff } from './files.js'
 import { Command } from 'commander';
 const program = new Command();
 
@@ -15,6 +15,6 @@ const { args } = program;
 const options = program.opts();
 if (options.format) {
 } else {
-  console.log(fileDif(args[0], args[1]));
+  genDiff(args[0], args[1]);
 }
 
