@@ -15,6 +15,6 @@ const { args } = program;
 const options = program.opts();
 if (options.format) {
 } else {
-  genDiff(args[0], args[1]);
+  console.log(genDiff(args[0], args[1]));
 }
 
