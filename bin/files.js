@@ -17,8 +17,6 @@ export const genDiff = (filepath1, filepath2) => {
     let resultString = '{\n';
     const obj = {};
     const generateResultList = (child) => {
-      console.log(child);
-      console.log(deleteList[deleteList.length - 1]);
       if ((deleteList.length > 0) && (deleteList[deleteList.length - 1][0] === child[0]) && (deleteList[deleteList.length - 1][1] === child[1])) {
         deleteList.pop();
         resultString += `    ${child[0]}: ${child[1]}\n`;
@@ -34,7 +32,6 @@ export const genDiff = (filepath1, filepath2) => {
     file2 = JSON.parse(file2);
     const array1 = Object.entries(file1);
     const array2 = Object.entries(file2);
-    console.log(array1, array2);
     const overallArray = [...array1, ...array2];
     overallArray.sort(sortFn);
     const newArray = [];
@@ -46,9 +43,7 @@ export const genDiff = (filepath1, filepath2) => {
         deleteList.splice(0, 0, overallArray[i]);
       }
     }
-    console.log(deleteList);
     newArray.push(overallArray[overallArray.length - 1]);
-    console.log(newArray);
     newArray.map(generateResultList);
     return resultString + '}';
   }
