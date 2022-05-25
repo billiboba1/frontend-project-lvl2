@@ -1,12 +1,6 @@
 import * as fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
-import process from 'process';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const sortFn = (x, y) => {
   if (x[0] > y[0]) {
@@ -53,8 +47,6 @@ const generateDifference = (file1, file2) => {
 }
 
 export const genDiff = (filepathes) => {
-  console.log(process.cwd);
-  console.log(__filename, __dirname);
   const path1 = path.resolve(filepathes[0]);
   const path2 = path.resolve(filepathes[1]);
   const file1 = fs.readFileSync(path1, "utf8");
