@@ -11,12 +11,9 @@ jobs:
 
       -uses: action/setup-node@v1
 
-      -name: install
-       run: npm install
+      -run: npm install
 
-      -name: linter
-       run: make lint
+      -run: make lint
 
-      -name: test
-       run: make test
+      -run: make test
 
