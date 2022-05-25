@@ -8,5 +8,5 @@ jobs:
       -uses: action/setup-node@v1
       -run: npm install
       -run: make lint
-      -run: npm test
+      -run: make test
 
