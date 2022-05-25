@@ -15,6 +15,5 @@ const rightOutput1 = '{\n  ' + '- follow: false\n  ' + '  host: hexlet.io\n  ' +
   '+ timeout: 20\n  ' + '+ verbose: true' + '\n}';
 
 test('fileDifference1', () => {
-  console.log(rightOutput1);
-  genDiff(filepathes).toBe(rightOutput1);
+  expect(genDiff(filepathes)).toBe(rightOutput1);
 })
