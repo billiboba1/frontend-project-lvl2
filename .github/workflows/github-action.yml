@@ -9,8 +9,7 @@ jobs:
     steps:
       -uses: action/checkout@v2
 
-      -name: setup
-       uses: action/setup-node@v1
+      -uses: action/setup-node@v1
 
       -name: install
        run: npm install
