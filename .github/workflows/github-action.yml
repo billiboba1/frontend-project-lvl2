@@ -1,4 +1,4 @@
-name: github-action
+name: hexlet-check
 on: push
 jobs: 
   build:
@@ -6,4 +6,8 @@ jobs:
     steps:
       -uses: action/checkout@v2
       -uses: action/setup-node@v1
+      
+      -run: npm install
+      -run: make lint
+      -run: make test
 
