@@ -1,8 +1,7 @@
-name: Node CI
+name: my-action
 
 on:
-  - push
-  - pull_request
+  push
 
 env:
   CI: true
