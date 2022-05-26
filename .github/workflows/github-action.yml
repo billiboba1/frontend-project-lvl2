@@ -23,5 +23,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm install
+      - run: npm install eslint-plugin-import@latest --save-dev
       - run: make lint
       - run: make test
