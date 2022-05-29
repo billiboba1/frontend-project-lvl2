@@ -20,6 +20,8 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
+          code-climate: ${{ secrets.code_climate_main}}
+          code-climate-testCov: ${{ secrets.code_climate_tests}}
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm install
