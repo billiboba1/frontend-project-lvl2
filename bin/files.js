@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
+import parseFile from './parsers.js';
 
 const sortFn = (x, y) => {
   if (x[0] > y[0]) {
@@ -23,8 +24,6 @@ const generateDifference = (file1, file2) => {
       resultString += `  + ${child[0]}: ${child[1]}\n`;
     }
   };
-  file1 = JSON.parse(file1);
-  file2 = JSON.parse(file2);
   const array1 = Object.entries(file1);
   const array2 = Object.entries(file2);
   const overallArray = [...array1, ...array2];
@@ -47,8 +46,9 @@ const generateDifference = (file1, file2) => {
 export const genDiff = (filepathes) => {
   const path1 = path.resolve(filepathes[0]);
   const path2 = path.resolve(filepathes[1]);
+  const extension1 = _.last(path1.split('.'));
+  const extension2 = _.last(path2.split('.'));
   const file1 = fs.readFileSync(path1, 'utf8');
   const file2 = fs.readFileSync(path2, 'utf8');
-
-  return generateDifference(file1, file2);
+  return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2));
 };
