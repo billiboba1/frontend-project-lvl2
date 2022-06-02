@@ -7,8 +7,7 @@ const parseFile = (file, extension) => {
   } else if (extension === 'yml' || extension === 'yaml') {
     return yaml.loadAll(file)[0];
   }
-  return 0;
-  return console.error('undefined extension');
+  return console.error('error: undefined extension');
 }
 
 export default parseFile;

@@ -11,11 +11,12 @@ program
       + '\n\nCompares two configuration files and shows a difference.')
   .option('-f, --format <type>', 'output format')
   .arguments('<files...>')
-  .action(genDiff)
   .parse(process.argv);
 
 const { args } = program;
 const options = program.opts();
-if (options.format) {
 
-}
+program 
+  .action (genDiff(args, program.opts().format));
+
+

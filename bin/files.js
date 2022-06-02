@@ -12,22 +12,35 @@ const sortFn = (x, y) => {
   return 0;
 };
 
-const generateDifference = (file1, file2) => {
-  let resultString = '{\n';
-  const generateResultString = (child) => {
+const forEmpty = (file) => {
+  if (JSON.stringify(file) != '{}') {
+    return Object.entries(file);
+  }
+  return [];
+};
+
+const generateDifference = (file1, file2, format, space = 1) => {
+  let stylishString = '{\n';
+  const generateStylishString = (child, deleteList, space) => {
     if ((deleteList.length > 0) && (deleteList[deleteList.length - 1][0] === child[0]) && (deleteList[deleteList.length - 1][1] === child[1])) {
       deleteList.pop();
-      resultString += `    ${child[0]}: ${child[1]}\n`;
+      stylishString += `${'  '.repeat(space)}  ${child[0]}: ${child[1]}\n`;
     } else if (array1.includes(child) && !array2.includes(child)) {
-      resultString += `  - ${child[0]}: ${child[1]}\n`;
+      stylishString += `${'  '.repeat(space)}- ${child[0]}: ${child[1]}\n`;
     } else if (!array1.includes(child) && array2.includes(child)) {
-      resultString += `  + ${child[0]}: ${child[1]}\n`;
+      stylishString += `${'  '.repeat(space)}+ ${child[0]}: ${child[1]}\n`;
     }
   };
   const array1 = Object.entries(file1);
-  const array2 = Object.entries(file2);
+  const array2 = forEmpty(file2);
   const overallArray = [...array1, ...array2];
   overallArray.sort(sortFn);
+  overallArray.map((child) => {
+    if (_.isPlainObject(child[1])) {
+      child[1] = generateDifference(child[1], {}, format, space + 2);
+      return generateDifference(child[1], {}, format, space + 2);
+    }
+  })
   const newArray = [];
   const deleteList = [];
   for (let i = 0; i < overallArray.length - 1; i += 1) {
@@ -38,17 +51,19 @@ const generateDifference = (file1, file2) => {
     }
   }
   newArray.push(overallArray[overallArray.length - 1]);
-  newArray.map(generateResultString);
-  console.log(`${resultString}}`);
-  return `${resultString}}`;
+  if (format === 'stylish') {
+    newArray.map((child) => generateStylishString(child, deleteList, space));
+    console.log(`${stylishString}}`);
+    return `${stylishString}}`;
+  }
 };
 
-export const genDiff = (filepathes) => {
+export const genDiff = (filepathes, format = 'stylish') => {
   const path1 = path.resolve(filepathes[0]);
   const path2 = path.resolve(filepathes[1]);
   const extension1 = _.last(path1.split('.'));
   const extension2 = _.last(path2.split('.'));
   const file1 = fs.readFileSync(path1, 'utf8');
   const file2 = fs.readFileSync(path2, 'utf8');
-  return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2));
+  return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2), format);
 };
