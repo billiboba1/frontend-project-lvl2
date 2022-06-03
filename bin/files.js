@@ -41,6 +41,7 @@ const generateDifference = (file1, file2, format, space = 1) => {
       return generateDifference(child[1], {}, format, space + 2);
     }
   })
+  console.log(overallArray);
   const newArray = [];
   const deleteList = [];
   for (let i = 0; i < overallArray.length - 1; i += 1) {
