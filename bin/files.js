@@ -12,16 +12,6 @@ const sortFn = (x, y) => {
   return 0;
 };
 
-const combineFiles = (file1, file2) => {
-  const file = _.cloneDeep(file1);
-  for (const key in file2) {
-    if (!(key in file1)) {
-      file[key] = file2[key];
-    }
-  }
-  return file;
-};
-
 const sortFile = (file) => {
   const newArray = Object.keys(file);
   return newArray.sort(sortFn).reduce(
@@ -62,24 +52,20 @@ const generateDifference = (file1, file2, format, space = 1) => {
 
   console.log(combineAllParts(file1, file2));
 
-  const compareFiles = (file1, file2) => {
-    console.log('\n\n\n');
-    for (const key in file1) {
-      if (key in file2) {
-        if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-          generateStylishString();
-          compareFiles(file1[key], file2[key]);
-        } else if (file1[key] === file2[key]) {
-            console.log(101, 'и там и там');
-        } else {
-          console.log(303, 'значения разные');
-        }
-      } else {
-        console.log(202, 'только в 1');
+  const findElement = (file, obj) => {
+    for (const key in file) {
+      if (obj[key] === file[key] && !!file[key]) {
+        console.log('ldflk;gd;');
+        return true;
       }
-    }
+      if (_.isPlainObject(file[key])) {
+        if ((findElement(file[key], obj)) != undefined) {
+          return true;
+        }
+      }
+    }  
   };
-  //compareFiles(file1, file2);
+  console.log(findElement(file1, {'fee': 100500}));
 };
 
 export const genDiff = (filepathes, format = 'stylish') => {
