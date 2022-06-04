@@ -4,59 +4,82 @@ import path from 'path';
 import parseFile from './parsers.js';
 
 const sortFn = (x, y) => {
-  if (x[0] > y[0]) {
+  if (x > y) {
     return 1;
-  } if (x[0] < y[0]) {
+  } if (x < y) {
     return -1;
   }
   return 0;
 };
 
-const forEmpty = (file) => {
-  if (JSON.stringify(file) != '{}') {
-    return Object.entries(file);
+const combineFiles = (file1, file2) => {
+  const file = _.cloneDeep(file1);
+  for (const key in file2) {
+    if (!(key in file1)) {
+      file[key] = file2[key];
+    }
   }
-  return [];
+  return file;
+};
+
+const sortFile = (file) => {
+  const newArray = Object.keys(file);
+  return newArray.sort(sortFn).reduce(
+    (acc, key) => {
+      acc[key] = file[key];
+      return acc;
+    }, {}
+  );
 };
 
 const generateDifference = (file1, file2, format, space = 1) => {
   let stylishString = '{\n';
-  const generateStylishString = (child, deleteList, space) => {
-    if ((deleteList.length > 0) && (deleteList[deleteList.length - 1][0] === child[0]) && (deleteList[deleteList.length - 1][1] === child[1])) {
-      deleteList.pop();
-      stylishString += `${'  '.repeat(space)}  ${child[0]}: ${child[1]}\n`;
-    } else if (array1.includes(child) && !array2.includes(child)) {
-      stylishString += `${'  '.repeat(space)}- ${child[0]}: ${child[1]}\n`;
-    } else if (!array1.includes(child) && array2.includes(child)) {
-      stylishString += `${'  '.repeat(space)}+ ${child[0]}: ${child[1]}\n`;
+  const generateStylishString = (file, file2, status, space) => {
+    switch (status) {
+      case 0:
+
+      case 1:
+      
     }
   };
-  const array1 = Object.entries(file1);
-  const array2 = forEmpty(file2);
-  const overallArray = [...array1, ...array2];
-  overallArray.sort(sortFn);
-  overallArray.map((child) => {
-    if (_.isPlainObject(child[1])) {
-      child[1] = generateDifference(child[1], {}, format, space + 2);
-      return generateDifference(child[1], {}, format, space + 2);
+
+  console.log(file1, '\n', file2, '\n\n\n');
+
+  const combineAllParts = (file1, file2) => {
+    const file = _.cloneDeep(file1);
+    for (const key in file2) {
+      if (!(key in file1)) {
+        file[key] = file2[key];
+      } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
+        file[key] = combineAllParts(file[key], file2[key]);
+      } else if (file1[key] != file2[key]) {
+        file[key] = [file1[key], file2[key]];
+      }
     }
-  })
-  console.log(overallArray);
-  const newArray = [];
-  const deleteList = [];
-  for (let i = 0; i < overallArray.length - 1; i += 1) {
-    if (!((overallArray[i][0] === overallArray[i + 1][0]) && (overallArray[i][1] === overallArray[i + 1][1]))) {
-      newArray.push(overallArray[i]);
-    } else {
-      deleteList.splice(0, 0, overallArray[i]);
+    console.log('\n\n\n\n');
+    return file;
+  }
+
+  console.log(combineAllParts(file1, file2));
+
+  const compareFiles = (file1, file2) => {
+    console.log('\n\n\n');
+    for (const key in file1) {
+      if (key in file2) {
+        if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
+          generateStylishString();
+          compareFiles(file1[key], file2[key]);
+        } else if (file1[key] === file2[key]) {
+            console.log(101, 'и там и там');
+        } else {
+          console.log(303, 'значения разные');
+        }
+      } else {
+        console.log(202, 'только в 1');
+      }
     }
-  }
-  newArray.push(overallArray[overallArray.length - 1]);
-  if (format === 'stylish') {
-    newArray.map((child) => generateStylishString(child, deleteList, space));
-    console.log(`${stylishString}}`);
-    return `${stylishString}}`;
-  }
+  };
+  //compareFiles(file1, file2);
 };
 
 export const genDiff = (filepathes, format = 'stylish') => {
