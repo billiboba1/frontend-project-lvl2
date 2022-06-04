@@ -22,50 +22,42 @@ const sortFile = (file) => {
   );
 };
 
+const findElement = (file, obj) => {
+  for (const key in file) {
+    if (obj[key] === file[key] && !!file[key]) {
+      return true;
+    }
+    if (_.isPlainObject(file[key])) {
+      if ((findElement(file[key], obj)) != undefined) {
+        return true;
+      }
+    }
+  }  
+};
+
+const combineFiles = (file1, file2) => {
+  const file = _.cloneDeep(file1);
+  for (const key in file2) {
+    if (!(key in file1)) {
+      file[key] = file2[key];
+    } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
+      file[key] = combineFiles(file[key], file2[key]);
+    } else if (file1[key] != file2[key]) {
+      file[key] = [file1[key], file2[key]];
+    }
+  }
+  console.log('\n\n\n\n');
+  return file;
+};
+
 const generateDifference = (file1, file2, format, space = 1) => {
   let stylishString = '{\n';
   const generateStylishString = (file, file2, status, space) => {
-    switch (status) {
-      case 0:
-
-      case 1:
-      
-    }
+    
   };
 
   console.log(file1, '\n', file2, '\n\n\n');
-
-  const combineAllParts = (file1, file2) => {
-    const file = _.cloneDeep(file1);
-    for (const key in file2) {
-      if (!(key in file1)) {
-        file[key] = file2[key];
-      } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-        file[key] = combineAllParts(file[key], file2[key]);
-      } else if (file1[key] != file2[key]) {
-        file[key] = [file1[key], file2[key]];
-      }
-    }
-    console.log('\n\n\n\n');
-    return file;
-  }
-
-  console.log(combineAllParts(file1, file2));
-
-  const findElement = (file, obj) => {
-    for (const key in file) {
-      if (obj[key] === file[key] && !!file[key]) {
-        console.log('ldflk;gd;');
-        return true;
-      }
-      if (_.isPlainObject(file[key])) {
-        if ((findElement(file[key], obj)) != undefined) {
-          return true;
-        }
-      }
-    }  
-  };
-  console.log(findElement(file1, {'fee': 100500}));
+  console.log(combineFiles(file1, file2));
 };
 
 export const genDiff = (filepathes, format = 'stylish') => {
