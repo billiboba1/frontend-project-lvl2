@@ -22,26 +22,26 @@ const sortFile = (file) => {
   );
 };
 
-const findElement = (file, obj) => {
+const findElement = (file, name, value, requiredPath, currentPath = '') => {
   for (const key in file) {
-    if (obj[key] === file[key] && !!file[key]) {
+    if (value === file[key] && requiredPath === currentPath && key === name) {
       return true;
     }
     if (_.isPlainObject(file[key])) {
-      if ((findElement(file[key], obj)) != undefined) {
+      if (findElement(file[key], name, value, requiredPath, currentPath + `/${key}`) != undefined) {
         return true;
       }
     }
   }  
 };
 
-const combineFiles = (file1, file2) => {
+const combineAndSortFiles = (file1, file2) => {
   const file = _.cloneDeep(file1);
   for (const key in file2) {
     if (!(key in file1)) {
       file[key] = file2[key];
     } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-      file[key] = combineFiles(file[key], file2[key]);
+      file[key] = sortFile(combineAndSortFiles(file[key], file2[key]));
     } else if (file1[key] != file2[key]) {
       file[key] = [file1[key], file2[key]];
     }
@@ -50,14 +50,42 @@ const combineFiles = (file1, file2) => {
   return file;
 };
 
-const generateDifference = (file1, file2, format, space = 1) => {
+const returnStylishString = (file1, file2, requiredPath) => {
+  if (findElement(file1, key, file1[key], requiredPath)) {
+    if (findElement(file2, key, file1[key], requiredPath)) {
+      return 'both';
+      //both files includes
+    } else {
+      return 'second';
+      //only second file includes
+    }
+  } else {
+    return 'first';
+    //only first file includes
+  }
+};
+
+const generateDifference = (file1, file2, format) => {
+  console.log(findElement(file2, "follow", false, '/common'));
+  console.log(file1, file2);
   let stylishString = '{\n';
-  const generateStylishString = (file, file2, status, space) => {
-    
+
+  const generateStylishString = (combinedFiles, file1,  file2, space = 1, currentPath = '') => {
+    let internalString;
+    for (const key in combinedFiles) {
+      internalString = '';
+      if (_.isPlainObject(combinedFiles[key])) {
+        internalString += generateStylishString(combinedFiles, file1, file2, space + 2, currentPath + `/${key}`);
+        //add current path
+      } else {
+        internalString += returnStylishString(file1, file2, currentPath);
+      }
+    }
+    stylishString += internalString
   };
 
-  console.log(file1, '\n', file2, '\n\n\n');
-  console.log(combineFiles(file1, file2));
+  const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
+  stylishString += generateStylishString(combinedFiles, file1, file2);
 };
 
 export const genDiff = (filepathes, format = 'stylish') => {
