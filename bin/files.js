@@ -23,6 +23,7 @@ const sortFile = (file) => {
 };
 
 const findElement = (file, name, value, requiredPath, currentPath = '') => {
+  //console.log(file, name, value, requiredPath, currentPath, '\n\n\n');
   for (const key in file) {
     if (value === file[key] && requiredPath === currentPath && key === name) {
       return true;
@@ -46,27 +47,34 @@ const combineAndSortFiles = (file1, file2) => {
       file[key] = [file1[key], file2[key]];
     }
   }
-  console.log('\n\n\n\n');
+  console.log('\n');
   return file;
 };
 
-const returnStylishString = (file1, file2, requiredPath) => {
-  if (findElement(file1, key, file1[key], requiredPath)) {
-    if (findElement(file2, key, file1[key], requiredPath)) {
-      return 'both';
+const returnStylishString = (file1, file2, key, value, requiredPath) => {
+  //return files, which includes chosen part of the file
+  if (Array.isArray(value)) {
+    console.log('list');
+    return 'both';
+  }
+  if (findElement(file1, key, value, requiredPath)) {
+    if (findElement(file2, key, value, requiredPath)) {
+      console.log (1, 1);
+      return ('  ');
       //both files includes
     } else {
-      return 'second';
+      console.log(1, 0);
+      return ('- ');
       //only second file includes
     }
   } else {
-    return 'first';
+    console.log(0, 1);
+    return ('+ ');
     //only first file includes
   }
 };
 
 const generateDifference = (file1, file2, format) => {
-  console.log(findElement(file2, "follow", false, '/common'));
   console.log(file1, file2);
   let stylishString = '{\n';
 
@@ -75,10 +83,9 @@ const generateDifference = (file1, file2, format) => {
     for (const key in combinedFiles) {
       internalString = '';
       if (_.isPlainObject(combinedFiles[key])) {
-        internalString += generateStylishString(combinedFiles, file1, file2, space + 2, currentPath + `/${key}`);
-        //add current path
+        internalString += generateStylishString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);
       } else {
-        internalString += returnStylishString(file1, file2, currentPath);
+        internalString += returnStylishString(file1, file2, key, combinedFiles[key], currentPath);
       }
     }
     stylishString += internalString
