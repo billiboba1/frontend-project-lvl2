@@ -83,14 +83,31 @@ const returnStylishObject = (key, value, space, difference = '  ') => {
         returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
     }
-    returnString += needingSpace + '  }';
+    returnString += needingSpace + '  }\n';
   } 
-  returnString += '\n'; 
+  return returnString;
+};
+
+const returnSameStylishFiles = (key, value, space, difference = '  ') => {
+  const needingSpace = ('  '.repeat(space));
+  let returnString = needingSpace + difference + key + ': ';
+  if (_.isPlainObject(value)) {
+    returnString += '{\n';
+    for (const internalKey in value) {
+      if (_.isPlainObject(value[internalKey])) {
+        returnString += returnStylishObject(internalKey, value[internalKey], space + 2);
+      } else {
+        returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
+      }
+    }
+    returnString += needingSpace + '  }\n';
+  } else {
+    return returnString + value;
+  }
   return returnString;
 };
 
 const generateDifference = (file1, file2, format) => {
-  console.log(file1, file2);
   let stylishString = '{\n';
   const generateStylishString = (combinedFiles, file1,  file2, space = 1, currentPath = '') => {
     let internalString;
@@ -101,34 +118,33 @@ const generateDifference = (file1, file2, format) => {
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) != '  ') {
           //only one file includes this obj
-          //console.log(key, combinedFiles[key], currentPath);
           const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
           internalString += returnStylishObject(key, combinedFiles[key], space, difference);
+          stylishString += internalString
         } else {
-          stylishString += `${key}: {\n`;
+          stylishString += `${needingSpace}  ${key}: {\n`;
           generateStylishString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);
+          stylishString += needingSpace + '  }';
+          stylishString += internalString + '\n';
         }
       } else {
         if (Array.isArray(combinedFiles[key])) {
           //for same keys
-          internalString += needingSpace + `- ${key}: ${combinedFiles[key][0]}\n`;
-          internalString += needingSpace + `+ ${key}: ${combinedFiles[key][1]}`;
+          internalString += returnSameStylishFiles(key, combinedFiles[key][0], space, '- ') + '\n';
+          internalString += returnSameStylishFiles(key, combinedFiles[key][1], space, '+ ');
         } else {
           internalString += needingSpace;
           internalString += returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
           internalString += `${key}: ${combinedFiles[key]}`;
         }
+        stylishString += internalString + '\n';
       }
-      if (_.isPlainObject(combinedFiles[key])) {
-        internalString + endingScopes;
-      }
-      //console.log(internalString);
-      stylishString += internalString + '\n';
     }
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
   generateStylishString(combinedFiles, file1, file2);
+  stylishString += '}';
   console.log(stylishString);
 };
 
