@@ -23,10 +23,14 @@ const sortFile = (file) => {
 };
 
 const findElement = (file, name, value, requiredPath, currentPath = '') => {
-  //console.log(file, name, value, requiredPath, currentPath, '\n\n\n');
   for (const key in file) {
+    if (_.isPlainObject(value) && key === name && requiredPath === currentPath) {
+      return true;
+      //finding object or not
+    }
     if (value === file[key] && requiredPath === currentPath && key === name) {
       return true;
+      //found a file
     }
     if (_.isPlainObject(file[key])) {
       if (findElement(file[key], name, value, requiredPath, currentPath + `/${key}`) != undefined) {
@@ -51,48 +55,81 @@ const combineAndSortFiles = (file1, file2) => {
   return file;
 };
 
-const returnStylishString = (file1, file2, key, value, requiredPath) => {
+const returnIncludingFiles = (file1, file2, key, value, requiredPath) => {
   //return files, which includes chosen part of the file
-  if (Array.isArray(value)) {
-    console.log('list');
-    return 'both';
-  }
   if (findElement(file1, key, value, requiredPath)) {
     if (findElement(file2, key, value, requiredPath)) {
-      console.log (1, 1);
       return ('  ');
       //both files includes
     } else {
-      console.log(1, 0);
       return ('- ');
       //only second file includes
     }
   } else {
-    console.log(0, 1);
     return ('+ ');
     //only first file includes
   }
 };
 
+const returnStylishObject = (key, value, space, difference = '  ') => {
+  const needingSpace = ('  '.repeat(space));
+  let returnString = needingSpace + difference + key + ': ';
+  if (_.isPlainObject(value)) {
+    returnString += '{\n';
+    for (const internalKey in value) {
+      if (_.isPlainObject(value[internalKey])) {
+        returnString += returnStylishObject(internalKey, value[internalKey], space + 2);
+      } else {
+        returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
+      }
+    }
+    returnString += needingSpace + '  }';
+  } 
+  returnString += '\n'; 
+  return returnString;
+};
+
 const generateDifference = (file1, file2, format) => {
   console.log(file1, file2);
   let stylishString = '{\n';
-
   const generateStylishString = (combinedFiles, file1,  file2, space = 1, currentPath = '') => {
     let internalString;
+    const needingSpace = ('  '.repeat(space));
+    const endingScopes = ('  '.repeat(space - 1)) + '}';
     for (const key in combinedFiles) {
       internalString = '';
       if (_.isPlainObject(combinedFiles[key])) {
-        internalString += generateStylishString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);
+        if (returnIncludingFiles(file1, file2, key, {}, currentPath) != '  ') {
+          //only one file includes this obj
+          //console.log(key, combinedFiles[key], currentPath);
+          const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
+          internalString += returnStylishObject(key, combinedFiles[key], space, difference);
+        } else {
+          stylishString += `${key}: {\n`;
+          generateStylishString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);
+        }
       } else {
-        internalString += returnStylishString(file1, file2, key, combinedFiles[key], currentPath);
+        if (Array.isArray(combinedFiles[key])) {
+          //for same keys
+          internalString += needingSpace + `- ${key}: ${combinedFiles[key][0]}\n`;
+          internalString += needingSpace + `+ ${key}: ${combinedFiles[key][1]}`;
+        } else {
+          internalString += needingSpace;
+          internalString += returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
+          internalString += `${key}: ${combinedFiles[key]}`;
+        }
       }
+      if (_.isPlainObject(combinedFiles[key])) {
+        internalString + endingScopes;
+      }
+      //console.log(internalString);
+      stylishString += internalString + '\n';
     }
-    stylishString += internalString
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
-  stylishString += generateStylishString(combinedFiles, file1, file2);
+  generateStylishString(combinedFiles, file1, file2);
+  console.log(stylishString);
 };
 
 export const genDiff = (filepathes, format = 'stylish') => {
