@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { returnIncludingFiles, returnSameStylishFiles, returnStylishObject,
+import { returnIncludingFiles, returnStylishObject,
   combineAndSortFiles , sortFile} from '../functions.js';
 
 const returnStylishString = (file1, file2) => {
   let resultString = '{\n';
-  
+
   const generateResultString = (combinedFiles, file1, file2, space = 1, currentPath = '') => {
     let internalString;
     const needingSpace = ('  '.repeat(space));
@@ -19,20 +19,28 @@ const returnStylishString = (file1, file2) => {
         } else {
           resultString += `${needingSpace}  ${key}: {\n`;
           generateResultString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);
-          resultString += needingSpace + '  }';
-          resultString += internalString + '\n';
+          resultString += needingSpace + '  }' + internalString + '\n';
         }
       } else {
         if (Array.isArray(combinedFiles[key])) {
           //for same keys
-          internalString += returnStylishObject(key, combinedFiles[key][0], space, '- ') + '\n';
-          internalString += returnStylishObject(key, combinedFiles[key][1], space, '+ ');
+          if (_.isPlainObject(combinedFiles[key][0])) {
+            internalString += returnStylishObject(key, combinedFiles[key][0], space, '- ');
+          } else {
+            internalString += returnStylishObject(key, combinedFiles[key][0], space, '- ') + '\n';
+          }
+          if (_.isPlainObject(combinedFiles[key][1])) {
+            internalString += returnStylishObject(key, combinedFiles[key][1], space, '+ ');
+          } else {
+            internalString += returnStylishObject(key, combinedFiles[key][1], space, '+ ') + '\n';
+          }
+          resultString += internalString;
         } else {
           internalString += needingSpace;
           internalString += returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
           internalString += `${key}: ${combinedFiles[key]}`;
+          resultString += internalString + '\n';
         }
-        resultString += internalString + '\n';
       }
     }
   };
