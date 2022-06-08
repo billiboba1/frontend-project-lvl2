@@ -1,5 +1,5 @@
-export const rightOutput = `
-{
+export const rightOutputJSON = 
+`{
     common: {
       + follow: false
         setting1: Value 1

@@ -1,7 +1,8 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import { genDiff } from '../bin/files.js';
-import { rightOutput } from './__fixtures__/rightAnswer.js';
+import { rightOutputJSON } from './__fixtures__/rightAnswerJSON.js';
+import { rightOutputYML } from './__fixtures__/rightAnswerYML.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,11 +14,11 @@ const filepathesJSON = [pathJSON1, pathJSON2];
 const filepathesYML = [pathYML1, pathYML2];
 
 test('fileDifferenceJSON', () => {
-  expect(genDiff(filepathesJSON)).toBe(rightOutput);
+  expect(genDiff(filepathesJSON)).toBe(rightOutputJSON);
 });
 
 test('fileDifferenceYML', () => { 
-  expect(genDiff(filepathesYML)).toBe(rightOutput);
-})
+  expect(genDiff(filepathesYML)).toBe(rightOutputYML);
+});
 
 
