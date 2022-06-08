@@ -70,6 +70,8 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
       }
     }
     returnString += needingSpace + '  }\n';
+  } else {
+    return returnString + value;
   }
   return returnString;
 };

@@ -25,8 +25,8 @@ const returnStylishString = (file1, file2) => {
       } else {
         if (Array.isArray(combinedFiles[key])) {
           //for same keys
-          internalString += returnSameStylishFiles(key, combinedFiles[key][0], space, '- ') + '\n';
-          internalString += returnSameStylishFiles(key, combinedFiles[key][1], space, '+ ');
+          internalString += returnStylishObject(key, combinedFiles[key][0], space, '- ') + '\n';
+          internalString += returnStylishObject(key, combinedFiles[key][1], space, '+ ');
         } else {
           internalString += needingSpace;
           internalString += returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
