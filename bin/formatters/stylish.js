@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import { returnIncludingFiles, returnStylishObject,
-  combineAndSortFiles , sortFile} from '../functions.js';
+import {
+  returnIncludingFiles, returnStylishObject, combineAndSortFiles, sortFile
+} from '../functions.js';
 
 const returnStylishString = (file1, file2) => {
   let resultString = '{\n';

@@ -76,25 +76,6 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
   return returnString;
 };
 
-export const returnSameStylishFiles = (key, value, space, difference = '  ') => {
-  const needingSpace = ('  '.repeat(space));
-  let returnString = needingSpace + difference + key + ': ';
-  if (_.isPlainObject(value)) {
-    returnString += '{\n';
-    for (const internalKey in value) {
-      if (_.isPlainObject(value[internalKey])) {
-        returnString += returnStylishObject(internalKey, value[internalKey], space + 2);
-      } else {
-        returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
-      }
-    }
-    returnString += needingSpace + '  }';
-  } else {
-    return returnString + value;
-  }
-  return returnString;
-};
-
 export const sortFile = (file) => {
   const newArray = Object.keys(file);
   return newArray.sort(sortFn).reduce(
@@ -104,4 +85,10 @@ export const sortFile = (file) => {
     }, {}
   );
 };
+
+export const normalizePath = (path) => {
+  const [ empty, ...otherPath ] = path.split('/');
+  console.log(otherPath.join('.'));
+  return otherPath.join('.');
+}
 
