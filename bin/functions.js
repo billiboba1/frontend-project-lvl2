@@ -88,7 +88,32 @@ export const sortFile = (file) => {
 
 export const normalizePath = (path) => {
   const [ empty, ...otherPath ] = path.split('/');
-  console.log(otherPath.join('.'));
   return otherPath.join('.');
+}
+
+export const normalizeOutput = (path) => {
+  const [ empty, ...otherOutput ] = path.split('\n');
+  return otherOutput.join('\n');
+}
+
+const returnQuotes = (value) => {
+  if (value != false && value != true && value != null && value != '[complex value]') {
+    return `'${value}'`;
+  } else if (value === '') {
+    return "''";
+  } else if (value === null) {
+    return null;
+  }
+  return value;
+}
+
+export const returnRemovedPart = (path) => {
+  return `\nProperty '${path}' was removed`
+}
+export const returnAddedPart = (path, value) => {
+  return `\nProperty '${path}' was added with value: ${returnQuotes(value)}`;
+}
+export const returnUpdatedPart = (path, deletedValue, newValue) => {
+  return `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
 }
 

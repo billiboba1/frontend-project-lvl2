@@ -1,23 +1,31 @@
 import _ from 'lodash';
 import {
-  returnIncludingFiles, returnStylishObject, combineAndSortFiles, sortFile, normalizePath
+  returnIncludingFiles, normalizeOutput, combineAndSortFiles, sortFile, normalizePath,
+  returnAddedPart, returnRemovedPart, returnUpdatedPart
 } from '../functions.js';
 
-const returnPlainString = () => {
+const returnPlainString = (file1, file2) => {
   let resultString = '';
 
   const generateResultString = (combinedFiles, file1, file2, currentPath = '') => {
     for (const key in combinedFiles) {
-      plainPath = normalizePath(currentPath);
+      const plainPath = normalizePath(currentPath + `/${key}`);
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) != '  ') {
           //only one file includes this obj
           const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
-          //if ()
+          switch (difference) {              
+            case '+ ':
+              resultString += returnAddedPart(plainPath, '[complex value]')
+              break;
+            case '- ':
+              resultString += returnRemovedPart(plainPath);
+              break;
+            default:
+              break;
+          }
         } else {
-          resultString += `${key}: {\n`;
           generateResultString(combinedFiles[key], file1, file2, currentPath + `/${key}`);
-          resultString += '  }' + internalString + '\n';
         }
       } else {
         if (Array.isArray(combinedFiles[key])) {
@@ -25,30 +33,37 @@ const returnPlainString = () => {
           //Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
           if (_.isPlainObject(combinedFiles[key][1])) {
             if (_.isPlainObject(combinedFiles[key][0])) {
-              resultString += `\nProperty '${plainPath}' was updated. From [complex value] to [complex value]`;
+              resultString += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
             } else {
-              resultString += `\nProperty '${plainPath}' was updated. From '${combinedFiles[key][0]}' to [complex value]`;
+              resultString += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
             }
           } else {
             if (_.isPlainObject(combinedFiles[key][0])) {
-              resultString += `\nProperty '${plainPath}' was updated. From [complex value] to '${combinedFiles[key][1]}'`;
+              resultString += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
             } else {
-              resultString += `\nProperty '${plainPath}' was updated. From '${combinedFiles[key][0]}' to '${combinedFiles[key][1]}'`;
+              resultString += returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
             }
           }
         } else {
-          resultString += returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
-          resultString += `${} ${}`;
-          resultString += internalString + '\n';
+          const difference = returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
+          switch (difference) {              
+            case '+ ':
+              resultString += returnAddedPart(plainPath, combinedFiles[key])
+              break;
+            case '- ':
+              resultString += returnRemovedPart(plainPath);
+              break;
+            default:
+              break;
+          }
         }
       }
     }
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
-  returnPlainString(combinedFiles, file1, file2);
-  resultString += '}';
-  return resultString;
+  generateResultString(combinedFiles, file1, file2);
+  return normalizeOutput(resultString);
 };
 
 export default returnPlainString;
