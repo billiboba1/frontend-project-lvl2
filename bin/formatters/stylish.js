@@ -16,7 +16,7 @@ const returnStylishString = (file1, file2) => {
           //only one file includes this obj
           const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
           internalString += returnStylishObject(key, combinedFiles[key], space, difference);
-          resultString += internalString
+          resultString += internalString;
         } else {
           resultString += `${needingSpace}  ${key}: {\n`;
           generateResultString(combinedFiles[key], file1, file2, space + 2, currentPath + `/${key}`);

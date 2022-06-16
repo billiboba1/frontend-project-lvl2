@@ -4,7 +4,7 @@ import path from 'path';
 import parseFile from './parsers.js';
 import returnStylishString from './formatters/stylish.js';
 import returnPlainString from './formatters/plain.js';
-
+import returnJsonString from './formatters/json.js';
 const generateDifference = (file1, file2, format) => {
   if (format === 'stylish') {
     const string = returnStylishString(file1, file2);

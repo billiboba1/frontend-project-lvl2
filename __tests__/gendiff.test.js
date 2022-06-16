@@ -23,4 +23,9 @@ test('plainDifference', () => {
   expect(genDiff(filepathesYML, 'plain')).toBe(plainOutputYML);
 });
 
+test('jsonDifference', () => {
+  expect(genDiff(filepathesJSON, 'json')).toBe(jsonOutputJSON);
+  expect(genDiff(filepathesYML, 'json')).toBe(jsonOutputYML);
+})
+
 

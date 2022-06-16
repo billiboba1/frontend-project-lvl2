@@ -94,7 +94,7 @@ export const normalizePath = (path) => {
 export const normalizeOutput = (path) => {
   const [ empty, ...otherOutput ] = path.split('\n');
   return otherOutput.join('\n');
-}
+};
 
 const returnQuotes = (value) => {
   if (value != false && value != true && value != null && value != '[complex value]') {
@@ -105,15 +105,37 @@ const returnQuotes = (value) => {
     return null;
   }
   return value;
-}
+};
 
 export const returnRemovedPart = (path) => {
   return `\nProperty '${path}' was removed`
-}
+};
+
 export const returnAddedPart = (path, value) => {
   return `\nProperty '${path}' was added with value: ${returnQuotes(value)}`;
-}
+};
+
 export const returnUpdatedPart = (path, deletedValue, newValue) => {
   return `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
+};
+
+export const putValueInside = (path, resultObject, value) => {
+  const [ empty, ...pathes] = path.split('/');
+  const putInsideKey = (path, resultObject, value) => {
+    const [ needingWay, ...other] = path.split('.');
+    if (other.length === 0) {
+      resultObject[needingWay] = value;
+      return resultObject;
+    } else {
+      resultObject[needingWay] = putInsideKey(other.join('.'), {}, value);
+      return resultObject;
+    } 
+  };
+  return putInsideKey(pathes.join('.'), resultObject, value);
+};
+
+const pathIntoArray = (path) => {
+  const [ empty, ...pathes] = path.split('/');
+  return pathes;
 }
 
