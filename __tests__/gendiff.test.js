@@ -1,8 +1,8 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import { genDiff } from '../bin/files.js';
-import { stylishOutputJSON, stylishOutputYML, plainOutputJSON, plainOutputYML }
-  from './__fixtures__/rightAnswers.js';
+import { stylishOutputJSON, stylishOutputYML, plainOutputJSON, plainOutputYML,
+  jsonOutputJSON, jsonOutputYML} from './__fixtures__/rightAnswers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

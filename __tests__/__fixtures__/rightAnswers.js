@@ -117,7 +117,61 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
 export const jsonOutputJSON = 
-``;
+`{
+  "common": {
+    "follow": false,
+    "setting3": null,
+    "setting4": "blah blah",
+    "setting5": {
+      "key5": "value5"
+    },
+    "setting6": {
+      "doge": {
+        "wow": "so much"
+      },
+      "ops": "vops"
+    }
+  },
+  "group1": {
+    "baz": "bars",
+    "nest": "str"
+  },
+  "group3": {
+    "deep": {
+      "id": {
+        "number": 45
+      }
+    },
+    "fee": 100500
+  }
+}`;
 
 export const jsonOutputYML = 
-``;
+`{
+  "common": {
+    "follow": false,
+    "setting3": null,
+    "setting4": "blah blah",
+    "setting5": {
+      "key5": "value5"
+    },
+    "setting6": {
+      "doge": {
+        "wow": "so much"
+      },
+      "ops": "vops"
+    }
+  },
+  "group1": {
+    "baz": "bars",
+    "nest": "str"
+  },
+  "group3": {
+    "deep": {
+      "id": {
+        "number": 45
+      }
+    },
+    "fee": 100500
+  }
+}`;
