@@ -119,23 +119,28 @@ export const returnUpdatedPart = (path, deletedValue, newValue) => {
   return `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
 };
 
-export const putValueInside = (path, resultObject, value) => {
+export const getValueInside = (path, internalObject, value) => {
   const [ empty, ...pathes] = path.split('/');
-  const putInsideKey = (path, resultObject, value) => {
+  const putInsideKey = (path, internalObject, value) => {
     const [ needingWay, ...other] = path.split('.');
     if (other.length === 0) {
-      resultObject[needingWay] = value;
-      return resultObject;
+      internalObject[needingWay] = value;
+      return internalObject;
     } else {
-      resultObject[needingWay] = putInsideKey(other.join('.'), {}, value);
-      return resultObject;
+      internalObject[needingWay] = putInsideKey(other.join('.'), {}, value);
+      return internalObject;
     } 
   };
-  return putInsideKey(pathes.join('.'), resultObject, value);
+  return putInsideKey(pathes.join('.'), internalObject, value);
 };
 
-const pathIntoArray = (path) => {
-  const [ empty, ...pathes] = path.split('/');
-  return pathes;
+export const addValueInside = (resultObject, internalObject) => {
+  for (const key in internalObject) {
+    if (_.isPlainObject(resultObject[key]) && Object.keys(resultObject).includes(key)) {
+      addValueInside(resultObject[key], internalObject[key]);
+    } else {
+      Object.assign(resultObject, internalObject);
+    }
+  }
 }
 
