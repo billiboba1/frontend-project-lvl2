@@ -1,7 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/billiboba1/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/billiboba1/frontend-project-lvl2/actions)
 
-[![my-action](https://github.com/billiboba1/frontend-project-lvl2/workflows/github-action/badge.svg)](https://github.com/billiboba1/frontend-project-lvl2/actions)
+[![my-action](https://github.com/billiboba1/frontend-project-lvl2/workflows/github-action/badge.svg)](https://github.com/billiboba1/frontend-project-lvl2/actions/workflows/github-action.yml)
 
 <a href="https://codeclimate.com/github/billiboba1/frontend-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/2b9cbf542d024a83c530/maintainability" /></a>
 
