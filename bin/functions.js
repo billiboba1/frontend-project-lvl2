@@ -13,14 +13,14 @@ export const findElement = (file, name, value, requiredPath, currentPath = '') =
   for (const key in file) {
     if (_.isPlainObject(value) && key === name && requiredPath === currentPath) {
       return true;
-      //finding object or not
+      // finding object or not
     }
     if (value === file[key] && requiredPath === currentPath && key === name) {
       return true;
-      //found a file
+      // found a file
     }
     if (_.isPlainObject(file[key])) {
-      if (findElement(file[key], name, value, requiredPath, currentPath + `/${key}`) != undefined) {
+      if (findElement(file[key], name, value, requiredPath, `${currentPath}/${key}`) != undefined) {
         return true;
       }
     }
@@ -42,24 +42,22 @@ export const combineAndSortFiles = (file1, file2) => {
 };
 
 export const returnIncludingFiles = (file1, file2, key, value, requiredPath) => {
-  //return files, which includes chosen part of the file
+  // return files, which includes chosen part of the file
   if (findElement(file1, key, value, requiredPath)) {
     if (findElement(file2, key, value, requiredPath)) {
       return ('  ');
-      //both files includes
-    } else {
-      return ('- ');
-      //only second file includes
+      // both files includes
     }
-  } else {
-    return ('+ ');
-    //only first file includes
+    return ('- ');
+    // only second file includes
   }
+  return ('+ ');
+  // only first file includes
 };
 
 export const returnStylishObject = (key, value, space, difference = '  ') => {
   const needingSpace = ('  '.repeat(space));
-  let returnString = needingSpace + difference + key + ': ';
+  let returnString = `${needingSpace + difference + key}: `;
   if (_.isPlainObject(value)) {
     returnString += '{\n';
     for (const internalKey in value) {
@@ -69,7 +67,7 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
         returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
     }
-    returnString += needingSpace + '  }\n';
+    returnString += `${needingSpace}  }\n`;
   } else {
     return returnString + value;
   }
@@ -78,58 +76,49 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
 
 export const sortFile = (file) => {
   const newArray = Object.keys(file);
-  return newArray.sort(sortFn).reduce(
-    (acc, key) => {
-      acc[key] = file[key];
-      return acc;
-    }, {}
-  );
+  return newArray.sort(sortFn).reduce((acc, key) => {
+    acc[key] = file[key];
+    return acc;
+  }, {});
 };
 
 export const normalizePath = (path) => {
-  const [ empty, ...otherPath ] = path.split('/');
+  const [empty, ...otherPath] = path.split('/');
   return otherPath.join('.');
-}
+};
 
 export const normalizeOutput = (path) => {
-  const [ empty, ...otherOutput ] = path.split('\n');
+  const [empty, ...otherOutput] = path.split('\n');
   return otherOutput.join('\n');
 };
 
 const returnQuotes = (value) => {
   if (value != false && value != true && value != null && value != '[complex value]') {
     return `'${value}'`;
-  } else if (value === '') {
+  } if (value === '') {
     return "''";
-  } else if (value === null) {
+  } if (value === null) {
     return null;
   }
   return value;
 };
 
-export const returnRemovedPart = (path) => {
-  return `\nProperty '${path}' was removed`
-};
+export const returnRemovedPart = (path) => `\nProperty '${path}' was removed`;
 
-export const returnAddedPart = (path, value) => {
-  return `\nProperty '${path}' was added with value: ${returnQuotes(value)}`;
-};
+export const returnAddedPart = (path, value) => `\nProperty '${path}' was added with value: ${returnQuotes(value)}`;
 
-export const returnUpdatedPart = (path, deletedValue, newValue) => {
-  return `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
-};
+export const returnUpdatedPart = (path, deletedValue, newValue) => `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
 
 export const getValueInside = (path, internalObject, value) => {
-  const [ empty, ...pathes] = path.split('/');
+  const [empty, ...pathes] = path.split('/');
   const putInsideKey = (path, internalObject, value) => {
-    const [ needingWay, ...other] = path.split('.');
+    const [needingWay, ...other] = path.split('.');
     if (other.length === 0) {
       internalObject[needingWay] = value;
       return internalObject;
-    } else {
-      internalObject[needingWay] = putInsideKey(other.join('.'), {}, value);
-      return internalObject;
-    } 
+    }
+    internalObject[needingWay] = putInsideKey(other.join('.'), {}, value);
+    return internalObject;
   };
   return putInsideKey(pathes.join('.'), internalObject, value);
 };
@@ -142,5 +131,4 @@ export const addValueInside = (resultObject, internalObject) => {
       Object.assign(resultObject, internalObject);
     }
   }
-}
-
+};

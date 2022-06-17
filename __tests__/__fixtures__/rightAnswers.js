@@ -1,5 +1,4 @@
-export const stylishOutputJSON = 
-`{
+export const stylishOutputJSON = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -44,8 +43,7 @@ export const stylishOutputJSON =
     }
 }`;
 
-export const stylishOutputYML = 
-`{
+export const stylishOutputYML = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -90,8 +88,7 @@ export const stylishOutputYML =
     }
 }`;
 
-export const plainOutputJSON = 
-`Property 'common.follow' was added with value: false
+export const plainOutputJSON = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -103,8 +100,7 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-export const plainOutputYML = 
-`Property 'common.follow' was added with value: false
+export const plainOutputYML = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -116,8 +112,7 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-export const jsonOutputJSON = 
-`{
+export const jsonOutputJSON = `{
   "common": {
     "follow": false,
     "setting3": null,
@@ -146,8 +141,7 @@ export const jsonOutputJSON =
   }
 }`;
 
-export const jsonOutputYML = 
-`{
+export const jsonOutputYML = `{
   "common": {
     "follow": false,
     "setting3": null,

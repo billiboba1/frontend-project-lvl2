@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { genDiff } from './files.js';
+import genDiff from './files.js';
 
 const program = new Command();
 
@@ -16,7 +16,5 @@ program
 const { args } = program;
 const options = program.opts();
 
-program 
-  .action (genDiff(args, program.opts().format));
-
-
+program
+  .action(genDiff(args, program.opts().format));

@@ -1,8 +1,10 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import { genDiff } from '../bin/files.js';
-import { stylishOutputJSON, stylishOutputYML, plainOutputJSON, plainOutputYML,
-  jsonOutputJSON, jsonOutputYML} from './__fixtures__/rightAnswers.js';
+import genDiff from '../bin/files.js';
+import {
+  stylishOutputJSON, stylishOutputYML, plainOutputJSON, plainOutputYML,
+  jsonOutputJSON, jsonOutputYML,
+} from './__fixtures__/rightAnswers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,7 +20,7 @@ test('stylishDifference', () => {
   expect(genDiff(filepathesYML)).toBe(stylishOutputYML);
 });
 
-test('plainDifference', () => { 
+test('plainDifference', () => {
   expect(genDiff(filepathesJSON, 'plain')).toBe(plainOutputJSON);
   expect(genDiff(filepathesYML, 'plain')).toBe(plainOutputYML);
 });
@@ -26,6 +28,4 @@ test('plainDifference', () => {
 test('jsonDifference', () => {
   expect(genDiff(filepathesJSON, 'json')).toBe(jsonOutputJSON);
   expect(genDiff(filepathesYML, 'json')).toBe(jsonOutputYML);
-})
-
-
+});
