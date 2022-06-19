@@ -169,3 +169,7 @@ export const jsonOutputYML = `{
     "fee": 100500
   }
 }`;
+
+test('true', () => {
+  expect(true).toBe(true);
+})

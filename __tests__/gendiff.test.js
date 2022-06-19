@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
+import { test, expect } from '@jest/globals';
 import genDiff from '../bin/files.js';
 import {
   stylishOutputJSON, stylishOutputYML, plainOutputJSON, plainOutputYML,

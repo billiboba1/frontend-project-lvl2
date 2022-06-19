@@ -7,14 +7,13 @@ const program = new Command();
 
 program
   .version('0.0.1')
-  .description('Usage: gendiff [options] <filepath1> <filepath2>'
-      + '\n\nCompares two configuration files and shows a difference.')
+  .description('Compares two configuration files and shows a difference.')
   .option('-f, --format <type>', 'output format')
-  .arguments('<files...>')
+  .arguments('<filepath1, filepath2')
   .parse(process.argv);
 
 const { args } = program;
 const options = program.opts();
 
 program
-  .action(genDiff(args, program.opts().format));
+  .action(genDiff(args, options.format));
