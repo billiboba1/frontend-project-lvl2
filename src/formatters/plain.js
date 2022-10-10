@@ -29,7 +29,6 @@ const returnPlainString = (file1, file2) => {
         }
       } else if (Array.isArray(combinedFiles[key])) {
         // for same keys
-        // Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
             resultString += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
