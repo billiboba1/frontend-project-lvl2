@@ -2,9 +2,9 @@ import * as fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import parseFile from './parsers.js';
-import returnStylishString from './formatters/stylish.js';
-import returnPlainString from './formatters/plain.js';
-import returnJsonString from './formatters/json.js';
+import returnStylishString from '../src/formatters/stylish.js';
+import returnPlainString from '../src/formatters/plain.js';
+import returnJsonString from '../src/formatters/json.js';
 
 const generateDifference = (file1, file2, format) => {
   if (format === 'stylish') {
