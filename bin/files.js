@@ -11,11 +11,13 @@ const generateDifference = (file1, file2, format) => {
     const string = returnStylishString(file1, file2);
     console.log(string);
     return string;
-  } if (format === 'plain') {
+  }
+  if (format === 'plain') {
     const string = returnPlainString(file1, file2);
     console.log(string);
     return string;
-  } if (format === 'json') {
+  }
+  if (format === 'json') {
     const string = returnJsonString(file1, file2);
     console.log(string);
     return string;
@@ -30,6 +32,7 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const extension2 = _.last(path2.split('.'));
   const file1 = fs.readFileSync(path1, 'utf8');
   const file2 = fs.readFileSync(path2, 'utf8');
+  console.log(file1, file2);
   return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2), format);
 };
 
