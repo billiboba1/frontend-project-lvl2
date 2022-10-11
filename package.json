@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "[![Actions Status](https://github.com/billiboba1/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/billiboba1/frontend-project-lvl2/actions)",
-  "main": "bin/gendiff.js",
+  "main": "bin/files.js",
   "scripts": {
     "test": "jest"
   },
