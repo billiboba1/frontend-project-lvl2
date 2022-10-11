@@ -29,13 +29,12 @@ const genDiff = (filepathes, format = 'stylish') => {
   const extension1 = _.last(path1.split('.'));
   const extension2 = _.last(path2.split('.'));
   try {
-    fs.readFileSync(path1, 'utf8');
+    const file1 = fs.readFileSync(path1, 'utf8');
+    const file2 = fs.readFileSync(path2, 'utf8');
+    return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2), format);
   } catch (e) {
-    console.log(path1, path2);
+    console.log(path1, '\n', path2);
   }
-  const file1 = fs.readFileSync(path1, 'utf8');
-  const file2 = fs.readFileSync(path2, 'utf8');
-  return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2), format);
 };
 
 export default genDiff;
