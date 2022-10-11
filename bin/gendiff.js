@@ -16,4 +16,4 @@ const { args } = program;
 const options = program.opts();
 
 program
-  .action(genDiff(args, options.format));
+  .action(genDiff(args[0], args[1], options.format));
