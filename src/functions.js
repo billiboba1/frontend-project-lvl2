@@ -32,6 +32,7 @@ export const combineAndSortFiles = (file1, file2) => {
   console.log(file1, file);
   for (const key in file2) {
     console.log(key);
+    console.log(file1[key], file2[key], file1[key] != file2[key]);
     if (!(key in file1)) {
       console.log(key, ': ', file[key]);
       file[key] = file2[key];
