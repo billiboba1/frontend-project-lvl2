@@ -45,6 +45,7 @@ const returnStylishString = (file1, file2) => {
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
+  console.log(combinedFiles);
   generateResultString(combinedFiles, file1, file2);
   resultString += '}';
   return resultString;
