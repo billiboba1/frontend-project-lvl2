@@ -29,17 +29,12 @@ export const findElement = (file, name, value, requiredPath, currentPath = '') =
 
 export const combineAndSortFiles = (file1, file2) => {
   const file = _.cloneDeep(file1);
-  console.log(file1, file);
   for (const key in file2) {
-    console.log(key);
-    console.log(file1[key], file2[key], file1[key] != file2[key]);
     if (!(key in file1)) {
-      console.log(key, ': ', file[key]);
       file[key] = file2[key];
     } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
       file[key] = sortFile(combineAndSortFiles(file[key], file2[key]));
     } else if (file1[key] !== file2[key]) {
-      console.log(key, '=[', file1[key], file2[key],']');
       file[key] = [file1[key], file2[key]];
     }
   }

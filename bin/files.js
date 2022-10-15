@@ -32,7 +32,6 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const extension2 = _.last(path2.split('.'));
   const file1 = fs.readFileSync(path1, 'utf8');
   const file2 = fs.readFileSync(path2, 'utf8');
-  console.log('parsed 1\n', parseFile(file1, extension1), '\nparsed 2\n', parseFile(file2, extension2));
   return generateDifference(parseFile(file1, extension1), parseFile(file2, extension2), format);
 };
 
