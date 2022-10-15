@@ -38,7 +38,7 @@ export const combineAndSortFiles = (file1, file2) => {
       file[key] = file2[key];
     } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
       file[key] = sortFile(combineAndSortFiles(file[key], file2[key]));
-    } else if (file1[key] != file2[key]) {
+    } else if (file1[key] !== file2[key]) {
       console.log(key, '=[', file1[key], file2[key],']');
       file[key] = [file1[key], file2[key]];
     }
