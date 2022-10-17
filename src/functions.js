@@ -20,12 +20,21 @@ export const findElement = (file, name, value, requiredPath, currentPath = '') =
       // found a file
     }
     if (_.isPlainObject(file[key])) {
-      if (findElement(file[key], name, value, requiredPath, `${currentPath}/${key}`) != undefined) {
+      if (findElement(file[key], name, value, requiredPath, `${currentPath}/${key}`) !== undefined) {
         return true;
       }
     }
   }
 };
+
+export const sortFile = (file) => {
+  const newArray = Object.keys(file);
+  return newArray.sort(sortFn).reduce((acc, key) => {
+    acc[key] = file[key];
+    return acc;
+  }, {});
+};
+
 
 export const combineAndSortFiles = (file1, file2) => {
   const file = _.cloneDeep(file1);
@@ -74,14 +83,6 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
   return returnString;
 };
 
-export const sortFile = (file) => {
-  const newArray = Object.keys(file);
-  return newArray.sort(sortFn).reduce((acc, key) => {
-    acc[key] = file[key];
-    return acc;
-  }, {});
-};
-
 export const normalizePath = (path) => {
   const [empty, ...otherPath] = path.split('/');
   return otherPath.join('.');
@@ -93,7 +94,7 @@ export const normalizeOutput = (path) => {
 };
 
 const returnQuotes = (value) => {
-  if (value != false && value != true && value != null && value != '[complex value]') {
+  if (value !== false && value !== true && value !== null && value !== '[complex value]') {
     return `'${value}'`;
   } if (value === '') {
     return "''";

@@ -12,7 +12,7 @@ const returnStylishString = (file1, file2) => {
     for (const key in combinedFiles) {
       internalString = '';
       if (_.isPlainObject(combinedFiles[key])) {
-        if (returnIncludingFiles(file1, file2, key, {}, currentPath) != '  ') {
+        if (returnIncludingFiles(file1, file2, key, {}, currentPath) !== '  ') {
           // only one file includes this obj
           const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
           internalString += returnStylishObject(key, combinedFiles[key], space, difference);

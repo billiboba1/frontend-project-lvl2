@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import yaml from 'js-yaml';
 
 const parseFile = (file, extension) => {

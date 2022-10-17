@@ -11,7 +11,7 @@ const returnPlainString = (file1, file2) => {
     for (const key in combinedFiles) {
       const plainPath = normalizePath(`${currentPath}/${key}`);
       if (_.isPlainObject(combinedFiles[key])) {
-        if (returnIncludingFiles(file1, file2, key, {}, currentPath) != '  ') {
+        if (returnIncludingFiles(file1, file2, key, {}, currentPath) !== '  ') {
           // only one file includes this obj
           const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
           switch (difference) {
@@ -38,7 +38,8 @@ const returnPlainString = (file1, file2) => {
         } else if (_.isPlainObject(combinedFiles[key][0])) {
           resultString += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
         } else {
-          resultString += returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
+          resultString += returnUpdatedPart(plainPath, combinedFiles[key][0],
+            combinedFiles[key][1]);
         }
       } else {
         const difference = returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
