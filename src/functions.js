@@ -95,8 +95,7 @@ export const normalizeOutput = (path) => {
 
 const returnQuotes = (value) => {
   if (value !== false && value !== true && value !== null && value !== '[complex value]') {
-    console.log(26312478219999999999479127);
-    return `'${value}'`;
+    return value;
   } if (value === '') {
     return "''";
   } if (value === null) {
