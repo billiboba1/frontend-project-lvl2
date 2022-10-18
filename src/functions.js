@@ -38,7 +38,7 @@ export const sortFile = (file) => {
 
 export const combineAndSortFiles = (file1, file2) => {
   const file = _.cloneDeep(file1);
-  for (const key in file2) {
+  Object.keys(file2).forEach((key) => {
     if (!(key in file1)) {
       file[key] = file2[key];
     } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
@@ -46,7 +46,7 @@ export const combineAndSortFiles = (file1, file2) => {
     } else if (file1[key] !== file2[key]) {
       file[key] = [file1[key], file2[key]];
     }
-  }
+  });
   return file;
 };
 
@@ -69,13 +69,13 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
   let returnString = `${needingSpace + difference + key}: `;
   if (_.isPlainObject(value)) {
     returnString += '{\n';
-    for (const internalKey in value) {
+    Object.keys(value).forEach((internalKey) => {
       if (_.isPlainObject(value[internalKey])) {
         returnString += returnStylishObject(internalKey, value[internalKey], space + 2);
       } else {
         returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
-    }
+    });
     returnString += `${needingSpace}  }\n`;
   } else {
     return returnString + value;
@@ -123,11 +123,11 @@ export const getValueInside = (path, internalObject, value) => {
 };
 
 export const addValueInside = (resultObject, internalObject) => {
-  for (const key in internalObject) {
+  Object.keys(internalObject).forEach((key) => {
     if (_.isPlainObject(resultObject[key]) && Object.keys(resultObject).includes(key)) {
       addValueInside(resultObject[key], internalObject[key]);
     } else {
       Object.assign(resultObject, internalObject);
     }
-  }
+  });
 };
