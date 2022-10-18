@@ -9,7 +9,7 @@ const returnStylishString = (file1, file2) => {
   const generateResultString = (combinedFiles, file1, file2, space = 1, currentPath = '') => {
     let internalString;
     const needingSpace = ('  '.repeat(space));
-    for (const key in combinedFiles) {
+    Object.keys(combinedFiles).forEach((key) => {
       internalString = '';
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) !== '  ') {
@@ -41,7 +41,7 @@ const returnStylishString = (file1, file2) => {
         internalString += `${key}: ${combinedFiles[key]}`;
         resultString += `${internalString}\n`;
       }
-    }
+    });
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));

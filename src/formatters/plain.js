@@ -8,7 +8,7 @@ const returnPlainString = (file1, file2) => {
   let resultString = '';
 
   const generateResultString = (combinedFiles, file1, file2, currentPath = '') => {
-    for (const key in combinedFiles) {
+    Object.keys(combinedFiles).forEach((key) => {
       const plainPath = normalizePath(`${currentPath}/${key}`);
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) !== '  ') {
@@ -54,7 +54,7 @@ const returnPlainString = (file1, file2) => {
             break;
         }
       }
-    }
+    });
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));

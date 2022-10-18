@@ -94,7 +94,7 @@ export const normalizeOutput = (path) => {
 };
 
 const returnQuotes = (value) => {
-  if (typeof value === 'string') {
+  if (typeof value === 'string' && value !== '[complex value]') {
     return `'${value}'`;
   } else if (value === '') {
     return "''";

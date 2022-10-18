@@ -6,7 +6,7 @@ import {
 const returnJsonString = (firstFile, secondFile) => {
   const resultObject = {};
   const generateResultString = (combinedFiles, file1, file2, currentPath = '') => {
-    for (const key in combinedFiles) {
+    Object.keys(combinedFiles).forEach((key) => {
       const newPath = `${currentPath}/${key}`;
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '+ ') {
@@ -26,7 +26,7 @@ const returnJsonString = (firstFile, secondFile) => {
           addValueInside(resultObject, part);
         }
       }
-    }
+    });
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(firstFile, secondFile));
