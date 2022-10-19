@@ -6,7 +6,7 @@ import {
 
 const returnPlainString = (file1, file2) => {
   const resultString = {string: ''};
-
+  resultString.newString = 'newString';
   const generateResultString = (combinedFiles, file11, file22, currentPath = '') => {
     Object.keys(combinedFiles).forEach((key) => {
       const plainPath = normalizePath(`${currentPath}/${key}`);
