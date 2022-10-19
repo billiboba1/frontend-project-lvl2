@@ -5,50 +5,50 @@ import {
 } from '../functions.js';
 
 const returnPlainString = (file1, file2) => {
-  let resultString = '';
+  const resultString = [];
 
-  const generateResultString = (combinedFiles, file1, file2, currentPath = '') => {
+  const generateResultString = (combinedFiles, file11, file22, currentPath = '') => {
     Object.keys(combinedFiles).forEach((key) => {
       const plainPath = normalizePath(`${currentPath}/${key}`);
       if (_.isPlainObject(combinedFiles[key])) {
-        if (returnIncludingFiles(file1, file2, key, {}, currentPath) !== '  ') {
+        if (returnIncludingFiles(file11, file22, key, {}, currentPath) !== '  ') {
           // only one file includes this obj
-          const difference = returnIncludingFiles(file1, file2, key, {}, currentPath);
+          const difference = returnIncludingFiles(file11, file22, key, {}, currentPath);
           switch (difference) {
             case '+ ':
-              resultString += returnAddedPart(plainPath, '[complex value]');
+              resultString[0] += returnAddedPart(plainPath, '[complex value]');
               break;
             case '- ':
-              resultString += returnRemovedPart(plainPath);
+              resultString[0] += returnRemovedPart(plainPath);
               break;
             default:
               break;
           }
         } else {
-          generateResultString(combinedFiles[key], file1, file2, `${currentPath}/${key}`);
+          generateResultString(combinedFiles[key], file11, file22, `${currentPath}/${key}`);
         }
       } else if (Array.isArray(combinedFiles[key])) {
         // for same keys
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
-            resultString += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
+            resultString[0] += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
           } else {
-            resultString += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            resultString[0] += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
-          resultString += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
+          resultString[0] += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
         } else {
-          resultString += returnUpdatedPart(plainPath, combinedFiles[key][0],
-            combinedFiles[key][1]);
+          resultString[0] += returnUpdatedPart(
+            plainPath, combinedFiles[key][0], combinedFiles[key][1]);
         }
       } else {
-        const difference = returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
+        const difference = returnIncludingFiles(file11, file22, key, combinedFiles[key], currentPath);
         switch (difference) {
           case '+ ':
-            resultString += returnAddedPart(plainPath, combinedFiles[key]);
+            resultString[0] += returnAddedPart(plainPath, combinedFiles[key]);
             break;
           case '- ':
-            resultString += returnRemovedPart(plainPath);
+            resultString[0] += returnRemovedPart(plainPath);
             break;
           default:
             break;
@@ -59,7 +59,7 @@ const returnPlainString = (file1, file2) => {
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
   generateResultString(combinedFiles, file1, file2);
-  return normalizeOutput(resultString);
+  return normalizeOutput(resultString[0]);
 };
 
 export default returnPlainString;

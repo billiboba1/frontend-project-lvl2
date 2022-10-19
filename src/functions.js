@@ -20,11 +20,12 @@ export const findElement = (file, name, value, requiredPath, currentPath = '') =
       // found a file
     }
     if (_.isPlainObject(file[key])) {
-      if (findElement(file[key], name, value, requiredPath, `${currentPath}/${key}`) !== undefined) {
+      if (findElement(file[key], name, value, requiredPath, `${currentPath}/${key}`) === true) {
         return true;
       }
     }
   }
+  return false;
 };
 
 export const sortFile = (file) => {
