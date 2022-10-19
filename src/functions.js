@@ -36,7 +36,6 @@ export const sortFile = (file) => {
   }, {});
 };
 
-
 export const combineAndSortFiles = (file1, file2) => {
   const file = _.cloneDeep(file1);
   Object.keys(file2).forEach((key) => {
@@ -97,7 +96,7 @@ export const normalizeOutput = (path) => {
 const returnQuotes = (value) => {
   if (typeof value === 'string' && value !== '[complex value]') {
     return `'${value}'`;
-  } else if (value === '') {
+  } if (value === '') {
     return "''";
   }
   return value;

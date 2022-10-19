@@ -5,7 +5,7 @@ import {
 } from '../functions.js';
 
 const returnPlainString = (file1, file2) => {
-  const resultString = [];
+  const resultString = {string: ''};
 
   const generateResultString = (combinedFiles, file11, file22, currentPath = '') => {
     Object.keys(combinedFiles).forEach((key) => {
@@ -16,10 +16,10 @@ const returnPlainString = (file1, file2) => {
           const difference = returnIncludingFiles(file11, file22, key, {}, currentPath);
           switch (difference) {
             case '+ ':
-              resultString[0] += returnAddedPart(plainPath, '[complex value]');
+              resultString.string += returnAddedPart(plainPath, '[complex value]');
               break;
             case '- ':
-              resultString[0] += returnRemovedPart(plainPath);
+              resultString.string += returnRemovedPart(plainPath);
               break;
             default:
               break;
@@ -31,24 +31,23 @@ const returnPlainString = (file1, file2) => {
         // for same keys
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
-            resultString[0] += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
+            resultString.string += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
           } else {
-            resultString[0] += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            resultString.string += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
-          resultString[0] += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
+          resultString.string += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
         } else {
-          resultString[0] += returnUpdatedPart(
-            plainPath, combinedFiles[key][0], combinedFiles[key][1]);
+          resultString.string += returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
         }
       } else {
         const difference = returnIncludingFiles(file11, file22, key, combinedFiles[key], currentPath);
         switch (difference) {
           case '+ ':
-            resultString[0] += returnAddedPart(plainPath, combinedFiles[key]);
+            resultString.string += returnAddedPart(plainPath, combinedFiles[key]);
             break;
           case '- ':
-            resultString[0] += returnRemovedPart(plainPath);
+            resultString.string += returnRemovedPart(plainPath);
             break;
           default:
             break;
@@ -59,7 +58,7 @@ const returnPlainString = (file1, file2) => {
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
   generateResultString(combinedFiles, file1, file2);
-  return normalizeOutput(resultString[0]);
+  return normalizeOutput(resultString.string);
 };
 
 export default returnPlainString;
