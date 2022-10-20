@@ -63,12 +63,12 @@ const returnPlainString = (file1, file2) => {
       }
       //console.log(4);
     });
-    //console.log(resultArray);
-    return resultArray.join('\n');
+    //console.log(resultArray.join(''));
+    return resultArray.join('');
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
-  return generateResultString(combinedFiles, file1, file2);
+  return normalizePlainOutput(generateResultString(combinedFiles, file1, file2));
 };
 
 export default returnPlainString;
