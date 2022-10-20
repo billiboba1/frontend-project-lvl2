@@ -1,64 +1,74 @@
 import _ from 'lodash';
 import {
-  returnIncludingFiles, normalizeOutput, combineAndSortFiles, sortFile, normalizePath,
+  returnIncludingFiles, normalizePlainOutput, combineAndSortFiles, sortFile, normalizePath,
   returnAddedPart, returnRemovedPart, returnUpdatedPart,
 } from '../functions.js';
 
 const returnPlainString = (file1, file2) => {
-  const resultString = {string: ''};
-  resultString.newString = 'newString';
   const generateResultString = (combinedFiles, file11, file22, currentPath = '') => {
-    Object.keys(combinedFiles).forEach((key) => {
+    const resultArray = Object.keys(combinedFiles).map((key) => {
+      //console.log(key);
+      //console.log('0');
       const plainPath = normalizePath(`${currentPath}/${key}`);
       if (_.isPlainObject(combinedFiles[key])) {
+        //console.log('1');
         if (returnIncludingFiles(file11, file22, key, {}, currentPath) !== '  ') {
           // only one file includes this obj
           const difference = returnIncludingFiles(file11, file22, key, {}, currentPath);
           switch (difference) {
             case '+ ':
-              resultString.string += returnAddedPart(plainPath, '[complex value]');
-              break;
+              //console.log(returnAddedPart(plainPath, '[complex value]'));
+              return returnAddedPart(plainPath, '[complex value]');
             case '- ':
-              resultString.string += returnRemovedPart(plainPath);
-              break;
+              //console.log(returnRemovedPart(plainPath));
+              return returnRemovedPart(plainPath);
             default:
               break;
           }
         } else {
-          generateResultString(combinedFiles[key], file11, file22, `${currentPath}/${key}`);
+          return generateResultString(combinedFiles[key], file11, file22, `${currentPath}/${key}`);
         }
       } else if (Array.isArray(combinedFiles[key])) {
+        //console.log('2');
         // for same keys
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
-            resultString.string += returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
+            //console.log(returnUpdatedPart(plainPath, '[complex value]', '[complex value]'));
+            return returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
           } else {
-            resultString.string += returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            //console.log(returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]'));
+            return returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
-          resultString.string += returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
+          //console.log(returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]));
+          return returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
         } else {
-          resultString.string += returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
+          //console.log(returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]));
+          return returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
         }
       } else {
+        //console.log('3');
         const difference = returnIncludingFiles(file11, file22, key, combinedFiles[key], currentPath);
+        //console.log(difference);
         switch (difference) {
           case '+ ':
-            resultString.string += returnAddedPart(plainPath, combinedFiles[key]);
-            break;
+            //console.log(returnAddedPart(plainPath, combinedFiles[key]));
+            return returnAddedPart(plainPath, combinedFiles[key]);
           case '- ':
-            resultString.string += returnRemovedPart(plainPath);
-            break;
+            //console.log(returnRemovedPart(plainPath));
+            return returnRemovedPart(plainPath);
           default:
             break;
         }
       }
+      //console.log(4);
     });
+    //console.log(resultArray);
+    return resultArray.join('\n');
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(file1, file2));
-  generateResultString(combinedFiles, file1, file2);
-  return normalizeOutput(resultString.string);
+  return generateResultString(combinedFiles, file1, file2);
 };
 
 export default returnPlainString;

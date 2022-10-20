@@ -88,7 +88,7 @@ export const normalizePath = (path) => {
   return otherPath.join('.');
 };
 
-export const normalizeOutput = (path) => {
+export const normalizePlainOutput = (path) => {
   const [empty, ...otherOutput] = path.split('\n');
   return otherOutput.join('\n');
 };
