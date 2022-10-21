@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {
   returnIncludingFiles, normalizePlainOutput, combineAndSortFiles, sortFile, normalizePath,
-  returnAddedPart, returnRemovedPart, returnUpdatedPart,
+  returnAddedPart, returnRemovedPart, returnUpdatedPart, returnTrue
 } from '../functions.js';
 
 const returnPlainString = (file1, file2) => {
@@ -11,8 +11,7 @@ const returnPlainString = (file1, file2) => {
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file11, file22, key, {}, currentPath) !== '  ') {
           // only one file includes this obj
-          const difference = returnIncludingFiles(file11, file22, key, {}, currentPath);
-          switch (difference) {
+          switch (returnIncludingFiles(file11, file22, key, {}, currentPath)) {
             case '+ ':
               return returnAddedPart(plainPath, '[complex value]');
             case '- ':
@@ -31,12 +30,12 @@ const returnPlainString = (file1, file2) => {
               return returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
             }
           } else {
-            if (true) {
+            if (returnTrue()) {
               return returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
             }
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
-          if (true) {
+          if (returnTrue()) {
             return returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
           }
         } else {

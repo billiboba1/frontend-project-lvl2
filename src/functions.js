@@ -131,3 +131,7 @@ export const addValueInside = (resultObject, internalObject) => {
     }
   });
 };
+
+export const returnTrue = () => {
+  return true;
+};
