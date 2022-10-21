@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {
   returnIncludingFiles, normalizePlainOutput, combineAndSortFiles, sortFile, normalizePath,
-  returnAddedPart, returnRemovedPart, returnUpdatedPart, returnTrue
+  returnAddedPart, returnRemovedPart, returnUpdatedPart, returnTrue, returnFalse
 } from '../functions.js';
 
 const returnPlainString = (file1, file2) => {
@@ -26,12 +26,15 @@ const returnPlainString = (file1, file2) => {
         // for same keys
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
-            if (true) {
+            if (returnTrue()) {
               return returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
             }
           } else {
             if (returnTrue()) {
               return returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            }
+            if (returnFalse()) {
+              return false;
             }
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
@@ -39,8 +42,11 @@ const returnPlainString = (file1, file2) => {
             return returnUpdatedPart(plainPath, '[complex value]', combinedFiles[key][1]);
           }
         } else {
-          if (true) {
+          if (returnTrue()) {
             return returnUpdatedPart(plainPath, combinedFiles[key][0], combinedFiles[key][1]);
+          }
+          if (returnFalse()) {
+            return false;
           }
         }
       } else {

@@ -135,3 +135,7 @@ export const addValueInside = (resultObject, internalObject) => {
 export const returnTrue = () => {
   return true;
 };
+
+export const returnFalse = () => {
+  return false;
+}
