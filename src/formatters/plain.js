@@ -27,9 +27,13 @@ const returnPlainString = (file1, file2) => {
         // for same keys
         if (_.isPlainObject(combinedFiles[key][1])) {
           if (_.isPlainObject(combinedFiles[key][0])) {
-            return returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
+            if (true) {
+              return returnUpdatedPart(plainPath, '[complex value]', '[complex value]');
+            }
           } else {
-            return returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            if (true) {
+              return returnUpdatedPart(plainPath, combinedFiles[key][0], '[complex value]');
+            }
           }
         } else if (_.isPlainObject(combinedFiles[key][0])) {
           if (true) {
@@ -41,8 +45,7 @@ const returnPlainString = (file1, file2) => {
           }
         }
       } else {
-        const difference = returnIncludingFiles(file11, file22, key, combinedFiles[key], currentPath);
-        switch (difference) {
+        switch (returnIncludingFiles(file11, file22, key, combinedFiles[key], currentPath)) {
           case '+ ':
             return returnAddedPart(plainPath, combinedFiles[key]);
           case '- ':
