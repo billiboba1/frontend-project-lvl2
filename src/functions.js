@@ -61,30 +61,30 @@ export const returnIncludingFiles = (file1, file2, key, value, requiredPath) => 
 
 export const returnStylishObject = (key, value, space, difference = '  ') => {
   const needingSpace = ('  '.repeat(space));
-  let returnString = `${needingSpace + difference + key}: `;
+  let begin = `${needingSpace + difference + key}: `;
   if (_.isPlainObject(value)) {
-    returnString += '{\n';
+    begin += '{\n';
     Object.keys(value).forEach((internalKey) => {
       if (_.isPlainObject(value[internalKey])) {
-        returnString += returnStylishObject(internalKey, value[internalKey], space + 2);
+        begin += returnStylishObject(internalKey, value[internalKey], space + 2);
       } else {
-        returnString += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
+        begin += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
     });
-    returnString += `${needingSpace}  }\n`;
+    begin += `${needingSpace}  }\n`;
   } else {
-    return returnString + value;
+    return begin + value;
   }
-  return returnString;
+  return begin;
 };
 
 export const normalizePath = (path) => {
-  const [empty, ...otherPath] = path.split('/');
+  const [emptyPart, ...otherPath] = path.split('/');
   return otherPath.join('.');
 };
 
 export const normalizePlainOutput = (path) => {
-  const [empty, ...otherOutput] = path.split('\n');
+  const [emptyBegin, ...otherOutput] = path.split('\n');
   return otherOutput.join('\n');
 };
 
