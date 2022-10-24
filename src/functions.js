@@ -9,8 +9,8 @@ export const sortFn = (x, y) => {
   return 0;
 };
 
-export const findElement = (file, name, value, requiredPath, currentPath = '') => {
-  for (const key in file) {
+const findElement = (file, name, value, requiredPath, currentPath = '') => {
+  const array = Object.keys(file).map((key) => {
     if (_.isPlainObject(value) && key === name && requiredPath === currentPath) {
       return true;
       // finding object or not
@@ -24,6 +24,9 @@ export const findElement = (file, name, value, requiredPath, currentPath = '') =
         return true;
       }
     }
+  });
+  if (array.includes(true)) {
+    return true;
   }
   return false;
 };

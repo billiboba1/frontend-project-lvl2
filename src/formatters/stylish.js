@@ -53,7 +53,7 @@ const returnStylishString = (file1, file2) => {
               const string2 = returnStylishObject(key, combinedFiles[key][1], space, '+ ');
               return string1 + string2;
             }
-            returnFalse;
+            returnFalse();
           } else {
             if (returnTrue()) {
               const string2 = `${returnStylishObject(key, combinedFiles[key][1], space, '+ ')}\n`;
