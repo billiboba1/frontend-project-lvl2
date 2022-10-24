@@ -132,10 +132,6 @@ export const addValueInside = (resultObject, internalObject) => {
   });
 };
 
-export const returnTrue = () => {
-  return true;
-};
+export const returnTrue = () => true;
 
-export const returnFalse = () => {
-  return false;
-};
+export const returnFalse = () => false;
