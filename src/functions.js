@@ -1,14 +1,5 @@
 import _ from 'lodash';
 
-export const sortFn = (x, y) => {
-  if (x > y) {
-    return 1;
-  } if (x < y) {
-    return -1;
-  }
-  return 0;
-};
-
 const findElement = (file, name, value, requiredPath, currentPath = '') => {
   const array = Object.keys(file).map((key) => {
     if (_.isPlainObject(value) && key === name && requiredPath === currentPath) {
@@ -24,6 +15,7 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
         return true;
       }
     }
+    return false;
   });
   if (array.includes(true)) {
     return true;
@@ -33,7 +25,7 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
 
 export const sortFile = (file) => {
   const newArray = Object.keys(file);
-  return newArray.sort(sortFn).reduce((acc, key) => {
+  return _.sortBy(newArray).reduce((acc, key) => {
     acc[key] = file[key];
     return acc;
   }, {});
