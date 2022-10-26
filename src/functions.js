@@ -25,9 +25,7 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
 
 export const sortFile = (file) => {
   const newArray = Object.keys(file);
-  const arrayOfObjects = _.sortBy(newArray).map((key) => {
-    return {[key]: file[key]};
-  });
+  const arrayOfObjects = _.sortBy(newArray).map((key) => ({ [key]: file[key] }));
   const string = JSON.stringify(arrayOfObjects)
     .substring(2, JSON.stringify(arrayOfObjects).length - 2)
     .replace(/},{/g, ',');
