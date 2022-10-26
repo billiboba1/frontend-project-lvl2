@@ -24,7 +24,6 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
 };
 
 export const sortFile = (file) => {
-  console.log(file);
   const newArray = Object.keys(file);
   const arrayOfObjects = _.sortBy(newArray).map((key) => {
     return {[key]: file[key]};
@@ -32,8 +31,6 @@ export const sortFile = (file) => {
   const string = JSON.stringify(arrayOfObjects)
     .substring(2, JSON.stringify(arrayOfObjects).length - 2)
     .replace(/},{/g, ',');
-  console.log(JSON.stringify(arrayOfObjects).substring(2, JSON.stringify(arrayOfObjects).length - 2));
-  console.log(string, '\n');
   return JSON.parse(`{${string}}`);
 };
 
@@ -44,7 +41,6 @@ export const combineAndSortFiles = (file1, file2) => {
       file[key] = file2[key];
     } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
       file[key] = sortFile(combineAndSortFiles(file[key], file2[key]));
-      //console.log(file[key], '\n');
     } else if (file1[key] !== file2[key]) {
       file[key] = [file1[key], file2[key]];
     }
