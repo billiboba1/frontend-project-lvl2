@@ -23,27 +23,35 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
   return false;
 };
 
-export const sortFile = (file) => {
-  const newArray = Object.keys(file);
-  const arrayOfObjects = _.sortBy(newArray).map((key) => ({ [key]: file[key] }));
-  const string = JSON.stringify(arrayOfObjects)
-    .substring(2, JSON.stringify(arrayOfObjects).length - 2)
+const fromArrayToObject = (array) => {
+  const string = JSON.stringify(array)
+    .substring(2, JSON.stringify(array).length - 2)
     .replace(/},{/g, ',');
   return JSON.parse(`{${string}}`);
 };
 
+export const sortFile = (file) => {
+  const newArray = Object.keys(file);
+  const arrayOfObjects = _.sortBy(newArray).map((key) => ({ [key]: file[key] }));
+  return fromArrayToObject(arrayOfObjects);
+};
+
 export const combineAndSortFiles = (file1, file2) => {
-  const file = _.cloneDeep(file1);
-  Object.keys(file2).forEach((key) => {
-    if (!(key in file1)) {
-      file[key] = file2[key];
-    } else if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-      file[key] = sortFile(combineAndSortFiles(file[key], file2[key]));
-    } else if (file1[key] !== file2[key]) {
-      file[key] = [file1[key], file2[key]];
+  const newFile = Object.assign({}, file1, file2);
+  console.log(newFile);
+  const array = Object.keys(newFile).map((key) => {
+    //console.log(file1, file2, key);
+    if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
+      return {[key]: sortFile(combineAndSortFiles(file1[key], file2[key]))};
+    } else if (file1[key] !== file2[key] && file1[key] !== undefined && file2[key] !== undefined) {
+      return {[key] :[file1[key], file2[key]]};
     }
+    return {[key]: newFile[key]};
   });
-  return file;
+  console.log(file1, file2);
+  console.log(array, '\n\n\n');
+  //console.log(fromArrayToObject(array), '\n');
+  return fromArrayToObject(array);
 };
 
 export const returnIncludingFiles = (file1, file2, key, value, requiredPath) => {
