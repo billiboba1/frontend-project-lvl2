@@ -65,17 +65,16 @@ export const returnIncludingFiles = (file1, file2, key, value, requiredPath) => 
 
 export const returnStylishObject = (key, value, space, difference = '  ') => {
   const needingSpace = ('  '.repeat(space));
-  let begin = `${needingSpace + difference + key}: `;
+  const begin = `${needingSpace + difference + key}: `;
   if (_.isPlainObject(value)) {
-    begin += '{\n';
-    Object.keys(value).forEach((internalKey) => {
+    const innerOutput = Object.keys(value).map((internalKey) => {
       if (_.isPlainObject(value[internalKey])) {
-        begin += returnStylishObject(internalKey, value[internalKey], space + 2);
+        return returnStylishObject(internalKey, value[internalKey], space + 2);
       } else {
-        begin += `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
+        return `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
     });
-    begin += `${needingSpace}  }\n`;
+    return `${begin}{\n${innerOutput.join('')}${needingSpace}  }\n`;
   } else {
     return begin + value;
   }
