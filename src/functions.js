@@ -37,14 +37,14 @@ export const sortFile = (file) => {
 };
 
 export const combineAndSortFiles = (file1, file2) => {
-  const newFile = Object.assign({}, file1, file2);
+  const newFile = { ...file1, ...file2 };
   const array = Object.keys(newFile).map((key) => {
     if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-      return {[key]: sortFile(combineAndSortFiles(file1[key], file2[key]))};
-    } else if (file1[key] !== file2[key] && file1[key] !== undefined && file2[key] !== undefined) {
-      return {[key] :[file1[key], file2[key]]};
+      return { [key]: sortFile(combineAndSortFiles(file1[key], file2[key])) };
+    } if (file1[key] !== file2[key] && file1[key] !== undefined && file2[key] !== undefined) {
+      return { [key]: [file1[key], file2[key]] };
     }
-    return {[key]: newFile[key]};
+    return { [key]: newFile[key] };
   });
   return fromArrayToObject(array);
 };
