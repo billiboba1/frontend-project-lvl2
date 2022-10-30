@@ -70,15 +70,12 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
     const innerOutput = Object.keys(value).map((internalKey) => {
       if (_.isPlainObject(value[internalKey])) {
         return returnStylishObject(internalKey, value[internalKey], space + 2);
-      } else {
-        return `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
       }
+      return `${needingSpace}      ${internalKey}: ${value[internalKey]}\n`;
     });
     return `${begin}{\n${innerOutput.join('')}${needingSpace}  }\n`;
-  } else {
-    return begin + value;
   }
-  return begin;
+  return begin + value;
 };
 
 export const normalizePath = (path) => {
