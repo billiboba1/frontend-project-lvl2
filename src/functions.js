@@ -79,13 +79,17 @@ export const returnStylishObject = (key, value, space, difference = '  ') => {
 };
 
 export const normalizePath = (path) => {
-  const [emptyPart, ...otherPath] = path.split('/');
-  return otherPath.join('.');
+  const result = path.split('/')
+    .slice(1, path.split('/').length)
+    .join('.');
+  return result;
 };
 
 export const normalizePlainOutput = (path) => {
-  const [emptyBegin, ...otherOutput] = path.split('\n');
-  return otherOutput.join('\n');
+  const result = path.split('\n')
+    .slice(1, path.split('\n').length)
+    .join('\n');
+  return result;
 };
 
 const returnQuotes = (value) => {
@@ -103,18 +107,19 @@ export const returnAddedPart = (path, value) => `\nProperty '${path}' was added 
 
 export const returnUpdatedPart = (path, deletedValue, newValue) => `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
 
-export const getValueInside = (path, internalObject, value) => {
-  const [empty, ...pathes] = path.split('/');
-  const putInsideKey = (path, internalObject, value) => {
-    const [needingWay, ...other] = path.split('.');
+export const getValueInside = (path, object, value) => {
+  const pathes = path.split('/')
+    .slice(1, path.split('/').length);
+  const putInsideKey = (innerPath, innerObject, innerValue) => {
+    const [needingWay, ...other] = innerPath.split('.');
     if (other.length === 0) {
-      internalObject[needingWay] = value;
-      return internalObject;
+      innerObject[needingWay] = innerValue;
+      return innerObject;
     }
-    internalObject[needingWay] = putInsideKey(other.join('.'), {}, value);
-    return internalObject;
+    innerObject[needingWay] = putInsideKey(other.join('.'), {}, value);
+    return innerObject;
   };
-  return putInsideKey(pathes.join('.'), internalObject, value);
+  return putInsideKey(pathes.join('.'), object, value);
 };
 
 export const addValueInside = (resultObject, internalObject) => {
