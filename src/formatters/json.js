@@ -11,18 +11,18 @@ const returnJsonString = (firstFile, secondFile) => {
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '+ ') {
           // only one file includes this obj
-          const part = getValueInside(newPath, {}, combinedFiles[key]);
+          const part = getValueInside(newPath, combinedFiles[key]);
           addValueInside(resultObject, part);
         } else {
           generateResultString(combinedFiles[key], file1, file2, `${currentPath}/${key}`);
         }
       } else if (Array.isArray(combinedFiles[key])) {
-        const part = getValueInside(newPath, {}, combinedFiles[key][1]);
+        const part = getValueInside(newPath, combinedFiles[key][1]);
         addValueInside(resultObject, part);
       } else {
         const difference = returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
         if (difference === '+ ') {
-          const part = getValueInside(newPath, {}, combinedFiles[key]);
+          const part = getValueInside(newPath, combinedFiles[key]);
           addValueInside(resultObject, part);
         }
       }

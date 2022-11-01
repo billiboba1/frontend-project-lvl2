@@ -107,19 +107,18 @@ export const returnAddedPart = (path, value) => `\nProperty '${path}' was added 
 
 export const returnUpdatedPart = (path, deletedValue, newValue) => `\nProperty '${path}' was updated. From ${returnQuotes(deletedValue)} to ${returnQuotes(newValue)}`;
 
-export const getValueInside = (path, object, value) => {
+export const getValueInside = (path, value) => {
   const pathes = path.split('/')
     .slice(1, path.split('/').length);
-  const putInsideKey = (innerPath, innerObject, innerValue) => {
-    const [needingWay, ...other] = innerPath.split('.');
+  const putInsideKey = (innerPath, innerValue) => {
+    const needingWay = innerPath.split('.').slice(0, 1);
+    const other = innerPath.split('.').slice(1, innerPath.split('.').length);
     if (other.length === 0) {
-      innerObject[needingWay] = innerValue;
-      return innerObject;
+      return {[needingWay]: innerValue};
     }
-    innerObject[needingWay] = putInsideKey(other.join('.'), {}, value);
-    return innerObject;
+    return {[needingWay]: putInsideKey(other.join('.'), value)};
   };
-  return putInsideKey(pathes.join('.'), object, value);
+  return putInsideKey(pathes.join('.'), value);
 };
 
 export const addValueInside = (resultObject, internalObject) => {
