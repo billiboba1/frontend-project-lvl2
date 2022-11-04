@@ -23,7 +23,7 @@ const findElement = (file, name, value, requiredPath, currentPath = '') => {
   return false;
 };
 
-const fromArrayToObject = (array) => {
+export const fromArrayToObject = (array) => {
   const string = JSON.stringify(array)
     .substring(2, JSON.stringify(array).length - 2)
     .replace(/},{/g, ',');
@@ -114,20 +114,16 @@ export const getValueInside = (path, value) => {
     const needingWay = innerPath.split('.').slice(0, 1);
     const other = innerPath.split('.').slice(1, innerPath.split('.').length);
     if (other.length === 0) {
-      return {[needingWay]: innerValue};
+      return innerValue;
     }
-    return {[needingWay]: putInsideKey(other.join('.'), value)};
+    return putInsideKey(other.join('.'), value);
   };
   return putInsideKey(pathes.join('.'), value);
 };
 
-export const addValueInside = (resultObject, internalObject) => {
-  Object.keys(internalObject).forEach((key) => {
-    if (_.isPlainObject(resultObject[key]) && Object.keys(resultObject).includes(key)) {
-      addValueInside(resultObject[key], internalObject[key]);
-    } else {
-      Object.assign(resultObject, internalObject);
-    }
+export const forJsonOutput = (array) => {
+  array.map((obj) => {
+    
   });
 };
 
