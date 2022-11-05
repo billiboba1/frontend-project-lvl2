@@ -111,7 +111,6 @@ export const getValueInside = (path, value) => {
   const pathes = path.split('/')
     .slice(1, path.split('/').length);
   const putInsideKey = (innerPath, innerValue) => {
-    const needingWay = innerPath.split('.').slice(0, 1);
     const other = innerPath.split('.').slice(1, innerPath.split('.').length);
     if (other.length === 0) {
       return innerValue;

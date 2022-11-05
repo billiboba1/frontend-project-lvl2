@@ -10,21 +10,22 @@ const returnJsonString = (firstFile, secondFile) => {
       if (_.isPlainObject(combinedFiles[key])) {
         if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '+ ') {
           // needing file includes this obj
-          //console.log(getValueInside(newPath, combinedFiles[key]));
+          // console.log(getValueInside(newPath, combinedFiles[key]));
           return { [key]: getValueInside(newPath, combinedFiles[key]) };
-        } else if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '  ') {
+        } if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '  ') {
           return { [key]: generateResultString(combinedFiles[key], file1, file2, `${currentPath}/${key}`) };
         }
       } else if (Array.isArray(combinedFiles[key])) {
-        //console.log(getValueInside(newPath, combinedFiles[key][1]));
+        // console.log(getValueInside(newPath, combinedFiles[key][1]));
         return { [key]: getValueInside(newPath, combinedFiles[key][1]) };
       } else {
         const difference = returnIncludingFiles(file1, file2, key, combinedFiles[key], currentPath);
         if (difference === '+ ') {
-          //console.log(getValueInside(newPath, combinedFiles[key]));
+          // console.log(getValueInside(newPath, combinedFiles[key]));
           return { [key]: getValueInside(newPath, combinedFiles[key]) };
         }
       }
+      return undefined;
     });
     const needingValues = result.filter((child) => child !== undefined);
     return needingValues;
