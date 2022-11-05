@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  returnIncludingFiles, combineAndSortFiles, sortFile, getValueInside, forJsonOutput,
+  returnIncludingFiles, combineAndSortFiles, sortFile, getValueInside,
 } from '../functions.js';
 
 const returnJsonString = (firstFile, secondFile) => {
@@ -13,8 +13,6 @@ const returnJsonString = (firstFile, secondFile) => {
           //console.log(getValueInside(newPath, combinedFiles[key]));
           return { [key]: getValueInside(newPath, combinedFiles[key]) };
         } else if (returnIncludingFiles(file1, file2, key, {}, currentPath) === '  ') {
-          console.log(key);
-          console.log(returnIncludingFiles(file1, file2, key, {}, currentPath));
           return { [key]: generateResultString(combinedFiles[key], file1, file2, `${currentPath}/${key}`) };
         }
       } else if (Array.isArray(combinedFiles[key])) {
@@ -28,16 +26,18 @@ const returnJsonString = (firstFile, secondFile) => {
         }
       }
     });
-    //console.log(result.join(''));
-    const needingValues = result.filter((child) => child !== undefined)
-      .flat();
-    console.log(needingValues);
+    const needingValues = result.filter((child) => child !== undefined);
     return needingValues;
   };
 
   const combinedFiles = sortFile(combineAndSortFiles(firstFile, secondFile));
-  const finalObject = generateResultString(combinedFiles, firstFile, secondFile);
-  return JSON.stringify(finalObject, null, 2);
+  const finalArray = generateResultString(combinedFiles, firstFile, secondFile);
+  const finalObject = JSON.stringify(finalArray)
+    .substring(1, JSON.stringify(finalArray).length - 1)
+    .replace(/},{/g, ',')
+    .replace(/\[/g, '')
+    .replace(/\]/g, '');
+  return JSON.stringify(JSON.parse(finalObject), null, 2);
 };
 
 export default returnJsonString;

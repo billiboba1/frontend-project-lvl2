@@ -121,12 +121,6 @@ export const getValueInside = (path, value) => {
   return putInsideKey(pathes.join('.'), value);
 };
 
-export const forJsonOutput = (array) => {
-  array.map((obj) => {
-    
-  });
-};
-
 export const returnTrue = () => true;
 
 export const returnFalse = () => false;
